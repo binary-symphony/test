@@ -54,7 +54,7 @@ void opcontrol() {
 	pros::Motor tR (-3, pros::MotorGears::red);
 	pros::Motor bL (2, pros::MotorGears::red);
 	pros::Motor bR (4, pros::MotorGears::red);
-	pros::Motor cage (5, pros::MotorGears::red);
+	pros::Motor cage (5, pros::MotorGears::green);
 
 	while (true) {
 		int left = con.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
