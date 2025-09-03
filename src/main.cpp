@@ -49,6 +49,7 @@ void opcontrol() {
 /**
  * ports 1 + 2 are the left side group
  * ports 3 + 4 are the right side group
+ * port 5 is cage door controls
  */
 	pros::Motor tL (-1, pros::MotorGears::red);
 	pros::Motor tR (-3, pros::MotorGears::red);
