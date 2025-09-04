@@ -51,20 +51,22 @@ void opcontrol() {
  * ports 3 + 4 are the right side group
  * port 5 is cage door controls
  */
-	pros::Motor tL (-1, pros::MotorGears::red);
-	pros::Motor tR (-3, pros::MotorGears::red);
+	pros::Motor tL (1, pros::MotorGears::red);
+	pros::Motor tR (3, pros::MotorGears::red);
 	pros::Motor bL (2, pros::MotorGears::red);
 	pros::Motor bR (4, pros::MotorGears::red);
 	pros::Motor cage (5, pros::MotorGears::green);
+
+	cage.tare_position();
 
 	while (true) {
 		int left = con.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 		int right = con.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
 		if (con.get_digital(DIGITAL_R1)) {
-      		cage.move_velocity(100); // This is 100 because it's a 100rpm motor
+      		cage.move_absolute(90, 20);
     	}
 		if (con.get_digital(DIGITAL_R2)) {
-	  		cage.move_velocity(-100); // This is -100 because it's a 100rpm motor
+	  		cage.move_absolute(0, 20);
 		}
 		tL.move(left);
 		bL.move(left);
