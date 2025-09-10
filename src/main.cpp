@@ -53,7 +53,7 @@ void opcontrol() {
  */
 	pros::Motor tL (1, pros::MotorGears::red);
 	pros::Motor tR (3, pros::MotorGears::red);
-	pros::Motor bL (2, pros::MotorGears::red);
+	pros::Motor bL (9, pros::MotorGears::red);
 	pros::Motor bR (4, pros::MotorGears::red);
 	pros::Motor cage (5, pros::MotorGears::green);
 
