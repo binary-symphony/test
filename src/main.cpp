@@ -63,10 +63,14 @@ void opcontrol() {
 		int left = con.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 		int right = con.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
 		if (con.get_digital(DIGITAL_R1)) {
-      		cage.move_absolute(90, 20);
-    	}
+			cage.move_absolute(90, 20);
+			cage.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+			cage.move_velocity(0);
+		}
 		if (con.get_digital(DIGITAL_R2)) {
 	  		cage.move_absolute(0, 20);
+			cage.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+			cage.move_velocity(0);
 		}
 		tL.move(left);
 		bL.move(left);
