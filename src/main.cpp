@@ -46,16 +46,18 @@ void autonomous() {}
  */
 void opcontrol() {
 	pros::Controller con(pros::E_CONTROLLER_MASTER);
-/**
- * ports 1 + 2 are the left side group
- * ports 3 + 4 are the right side group
- * port 5 is cage door controls
+/* Port List:
+ * - Port 1: Transmitter
+ * - Port 3: Cage
+ * - Ports 4-5: Back Left, Back Right
+ * - Ports 6-7: Forward Left, Forward Right
+ * 
  */
-	pros::Motor tL (1, pros::MotorGears::red);
-	pros::Motor tR (-3, pros::MotorGears::red);
-	pros::Motor bL (9, pros::MotorGears::red);
-	pros::Motor bR (-4, pros::MotorGears::red);
-	pros::Motor cage (5, pros::MotorGears::green);
+	pros::Motor tL (6, pros::MotorGears::red);
+	pros::Motor tR (-7, pros::MotorGears::red);
+	pros::Motor bL (4, pros::MotorGears::red);
+	pros::Motor bR (-5, pros::MotorGears::red);
+	pros::Motor cage (3, pros::MotorGears::green);
 
 	cage.tare_position();
 
