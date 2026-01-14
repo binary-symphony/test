@@ -48,38 +48,67 @@ void opcontrol() {
 	pros::Controller con(pros::E_CONTROLLER_MASTER);
 /* Port List:
  * - Port 1: Transmitter
- * - Port 3: Cage
+ * - Port 3: claw
  * - Ports 4-5: Back Left, Back Right
  * - Ports 6-7: Forward Left, Forward Right
  * 
  */
-	pros::Motor tL (6, pros::MotorGears::red);
-	pros::Motor tR (-7, pros::MotorGears::red);
-	pros::Motor bL (4, pros::MotorGears::red);
-	pros::Motor bR (-5, pros::MotorGears::red);
-	pros::Motor cage (3, pros::MotorGears::green);
+	pros::Motor tL (4, pros::MotorGears::green);
+	pros::Motor bL (-7, pros::MotorGears::green);
 
-	cage.tare_position();
+	pros::Motor bR (-3, pros::MotorGears::green);
+	pros::Motor tR (-6, pros::MotorGears::green);
+
+	pros::Motor aL (-10, pros::MotorGears::red);
+	pros::Motor aR (9, pros::MotorGears::red);
+
+	pros::Motor claw (5, pros::MotorGears::green);
+
+	claw.tare_position();
+	claw.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	aL.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	aR.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+
+	int arm_speed = 75;
+	int claw_speed = 100;
+	int speedMult = 1;
 
 	while (true) {
 		int left = con.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 		int right = con.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
-		cage.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+		
 		if (con.get_digital(DIGITAL_R1)) {
-			cage.move_velocity(50);
+			claw.move_velocity(-1*claw_speed);
 			pros::delay(100);
-			cage.brake();
+			claw.brake();
 		}
 		if (con.get_digital(DIGITAL_R2)) {
-	  		cage.move_velocity(-50);
+	  		claw.move_velocity(claw_speed);
 			pros::delay(100);
-			cage.brake();
+			claw.brake();
 		}
-		tL.move(left);
-		bL.move(left);
 
-		tR.move(right);
-		bR.move(right);
+		if (con.get_digital(DIGITAL_L1)) {
+			aL.move_velocity(arm_speed);
+			aR.move_velocity(arm_speed);
+			pros::delay(50);
+			aL.brake();
+			aR.brake();
+		}
+
+		if (con.get_digital(DIGITAL_L2)) {
+			aL.move_velocity(-1*arm_speed);
+			aR.move_velocity(-1*arm_speed);
+			pros::delay(50);
+			aL.brake();
+			aR.brake();
+		}
+
+		tL.move(left * speedMult);
+		bL.move(left * speedMult);
+
+		tR.move(right * speedMult);
+		bR.move(right * speedMult);
 
 
 	}
