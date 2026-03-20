@@ -46,13 +46,13 @@ void autonomous() {}
  */
 void opcontrol() {
 	pros::Controller con(pros::E_CONTROLLER_MASTER);
-/* Port List:
- * - Port 1: Transmitter
- * - Port 3: claw
- * - Ports 4-5: Back Left, Back Right
- * - Ports 6-7: Forward Left, Forward Right
- * 
- */
+	/* The following initializes ports, as follows:
+	* - Port 1: Transmitter (this is a given)
+	* - Ports 7, 3: Back Left, Back Right
+	* - Ports 4, 6: Forward Left, Forward Right
+	* - Ports 10, 9: Arm Left, Arm Right
+	* - Port 5: Claw Control
+	*/
 	pros::Motor tL (4, pros::MotorGears::green);
 	pros::Motor bL (-7, pros::MotorGears::green);
 
@@ -64,19 +64,28 @@ void opcontrol() {
 
 	pros::Motor claw (5, pros::MotorGears::green);
 
+	// initalizes brake mode, and claw starting position
+
 	claw.tare_position();
 	claw.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	aL.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	aR.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
+	// init constants
+
 	int arm_speed = 75;
 	int claw_speed = 100;
 	int speedMult = 1;
 
+	// main loop
+
 	while (true) {
+		// get analog pos from controller
 		int left = con.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 		int right = con.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
 		
+		// use right bumper/trigger for claw control (close, open)
+
 		if (con.get_digital(DIGITAL_R1)) {
 			claw.move_velocity(-1*claw_speed);
 			pros::delay(100);
@@ -87,6 +96,8 @@ void opcontrol() {
 			pros::delay(100);
 			claw.brake();
 		}
+		
+		// use left bumper / trigger for arm control (up and down)
 
 		if (con.get_digital(DIGITAL_L1)) {
 			aL.move_velocity(arm_speed);
@@ -103,6 +114,8 @@ void opcontrol() {
 			aL.brake();
 			aR.brake();
 		}
+
+		// use analog sticks for drive control
 
 		tL.move(left * speedMult);
 		bL.move(left * speedMult);
